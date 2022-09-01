@@ -5,13 +5,10 @@
     <h1 align="center">Google Maps Markers Widget for Yii2</h1>
     <br>
 </p>
-
+This is a fork from "yii2mod/yii2-google-maps-markers" that fix or add the widget capacity of build a marker with lat and lng directly,
+and not take it like an adress, becasuse of that the marker don't point where it has to be.
 GoogleMaps Widget displays a set of user addresses as markers on the map.
 
-[![Latest Stable Version](https://poser.pugx.org/yii2mod/yii2-google-maps-markers/v/stable)](https://packagist.org/packages/yii2mod/yii2-google-maps-markers)
-[![Total Downloads](https://poser.pugx.org/yii2mod/yii2-google-maps-markers/downloads)](https://packagist.org/packages/yii2mod/yii2-google-maps-markers)
-[![License](https://poser.pugx.org/yii2mod/yii2-google-maps-markers/license)](https://packagist.org/packages/yii2mod/yii2-google-maps-markers)
-[![Build Status](https://travis-ci.org/yii2mod/yii2-google-maps-markers.svg?branch=master)](https://travis-ci.org/yii2mod/yii2-google-maps-markers)
 
 Installation
 ------------
@@ -21,13 +18,13 @@ The preferred way to install this extension is through [composer](http://getcomp
 Either run
 
 ```
-php composer.phar require yii2mod/yii2-google-maps-markers "*"
+php composer.phar require javierlob/yii2-google-maps-markers "*"
 ```
 
 or add
 
 ```
-"yii2mod/yii2-google-maps-markers": "*"
+"javierlob/yii2-google-maps-markers": "*"
 ```
 
 to the require section of your composer.json.
@@ -46,6 +43,13 @@ echo yii2mod\google\maps\markers\GoogleMaps::widget([
                 'country' => 'Ukraine',
             ],
             'htmlContent' => '<h1>Kharkiv</h1>',
+        ],
+        [
+            'location' => [
+                'lat' => '-33.44403850076919',
+                'lng' => '-70.65367723654894',
+            ],
+            'htmlContent' => '<h1>Palacio de la moneda</h1>',
         ],
         [
             'location' => [
@@ -68,8 +72,8 @@ echo yii2mod\google\maps\markers\GoogleMaps::widget([
     'userLocations' => [...],
     'googleMapsUrlOptions' => [
         'key' => 'this_is_my_key',
-        'language' => 'id',
-        'version' => '3.1.18',
+        'language' => 'es',
+        'version' => 'weekly',
     ],
     'googleMapsOptions' => [
         'mapTypeId' => 'roadmap',
@@ -85,8 +89,8 @@ OR via yii params configuration. For example:
 'params' => [
     'googleMapsUrlOptions' => [
         'key' => 'this_is_my_key',
-        'language' => 'id',
-        'version' => '3.1.18',
+        'language' => 'es',
+        'version' => 'weekly',
      ],
     'googleMapsOptions' => [
         'mapTypeId' => 'roadmap',
