@@ -32,28 +32,35 @@ yii.googleMapManager = (function ($) {
          * Get address and place it on map
          */
         getAddress: function (location, htmlContent, loadMap) {
-            var search = location.address;
-            pub.geocoder.geocode({'address': search}, function (results, status) {
-                if (status == google.maps.GeocoderStatus.OK) {
-                    var place = results[0];
-                    pub.drawMarker(place, htmlContent);
-                    pub.delay = 300;
-                }
-                else if (status == google.maps.GeocoderStatus.OVER_QUERY_LIMIT) {
-                    pub.nextAddress--;
-                    pub.delay = 2000;
-                }
-                else if (status == google.maps.GeocoderStatus.ZERO_RESULTS) {
-                    //If first query return zero results, then set address the value of the country
-                    if (location.address != location.country) {
-                        pub.nextAddress--;
-                        pub.geocodeData[pub.nextAddress].address = pub.geocodeData[pub.nextAddress].country;
-                    } else {
-                        pub.drawMarker(pub.mapOptions.center, htmlContent);
-                    }
-                }
+            if(location.lat && location.lng){
+                const place = { lat: location.lat, lng: location.lng };
+                pub.drawMarker(place, htmlContent);
+                pub.delay = 300;
                 loadMap();
-            });
+            }else{
+                var search = location.address;
+                pub.geocoder.geocode({'address': search}, function (results, status) {
+                    if (status == google.maps.GeocoderStatus.OK) {
+                        var place = results[0];
+                        pub.drawMarker(place, htmlContent);
+                        pub.delay = 300;
+                    }
+                    else if (status == google.maps.GeocoderStatus.OVER_QUERY_LIMIT) {
+                        pub.nextAddress--;
+                        pub.delay = 2000;
+                    }
+                    else if (status == google.maps.GeocoderStatus.ZERO_RESULTS) {
+                        //If first query return zero results, then set address the value of the country
+                        if (location.address != location.country) {
+                            pub.nextAddress--;
+                            pub.geocodeData[pub.nextAddress].address = pub.geocodeData[pub.nextAddress].country;
+                        } else {
+                            pub.drawMarker(pub.mapOptions.center, htmlContent);
+                        }
+                    }
+                    loadMap();
+                });
+            }
         },
         updatePosition: function (position) {
             var coordinates = [position];
@@ -193,7 +200,9 @@ yii.googleMapManager = (function ($) {
             if (pub.nextAddress < pub.geocodeData.length) {
                 var location = {
                     country: pub.geocodeData[pub.nextAddress].country,
-                    address: pub.geocodeData[pub.nextAddress].address
+                    address: pub.geocodeData[pub.nextAddress].address,
+                    lat: pub.geocodeData[pub.nextAddress].lat,
+                    lng: pub.geocodeData[pub.nextAddress].lng
                 };
                 var htmlContent = pub.geocodeData[pub.nextAddress].htmlContent;
                 pub.getAddress(location, htmlContent, loadMap);
